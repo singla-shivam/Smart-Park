@@ -5,11 +5,15 @@ import User from './UserComponent';
 import Footer from './FooterComponent';
 import Login from './LoginComponent';
 import Register from './RegisterComponent';
+import Firebase, { FirebaseContext } from '../firebase';
 
 
-let uid: any = undefined
-let usertype= 'user1' 
+// let uid: any = undefined
+// let usertype= 'user1' 
 
+
+let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
 
 class Main extends Component {
     constructor(props: any) {
@@ -22,12 +26,13 @@ class Main extends Component {
                 <Header />
                 {
                     uid != null ?
-                        (usertype != null) ? (usertype == "user"?<User /> : <Admin /> ):(<div>
-                            Unauthorized User
-                        </div>):
-                        (<> <Login /> 
-                        <h1>Register Here</h1>
-                            <Register/></>)
+                        ( userType == null ?
+                            <div>Unautorizied user</div> :
+                            userType === "user" && userType != null ? <User /> : <Admin />) :
+                        // <Login />
+                        <FirebaseContext.Consumer>
+                            {(firebase: Firebase) => <Login firebase={firebase} />}
+                        </FirebaseContext.Consumer>
                 }
                 <Footer />
 

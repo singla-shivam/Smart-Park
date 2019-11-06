@@ -13,8 +13,10 @@ const config = {
 }
 
 class Firebase {
+  auth: app.auth.Auth
   constructor() {
-    app.initializeApp(config);
+    app.initializeApp(config)
+    this.auth = app.auth()
   }
 }
 
