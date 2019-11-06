@@ -5,4 +5,5 @@ export interface SlotInterface {
   occupied: boolean
   slotId: string
   ease: number
+  booked: boolean
 }

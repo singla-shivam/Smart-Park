@@ -9,4 +9,6 @@ export interface UserInterface {
   /** Aadhar ID */
   id: String
   userType: 'user' | 'admin'
+  /** the pending fee */
+  balance: number
 }
