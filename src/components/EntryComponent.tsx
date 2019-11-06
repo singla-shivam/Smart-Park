@@ -28,7 +28,7 @@ class Entry extends React.Component<EntryProps, EntryState> {
                         <FormGroup row>
                             <Label for="dDate" sm={2}>Departure Time</Label>
                             <Col sm={10}>
-                                <Input type="time" name="dDate" id="dDate" placeholder="with a placeholder" />
+                                <Input type="datetime-local" name="dDate" id="dDate" placeholder="with a placeholder" />
                             </Col>
                         </FormGroup>
 
