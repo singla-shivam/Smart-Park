@@ -1,20 +1,51 @@
 import * as React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { UserInterface } from '../models/user';
+import Firebase from '../firebase';
 
 export interface RegisterProps {
-
+    firebase: Firebase
+    uid: string
 }
 
-export interface RegisterState {
-
+export interface RegisterState  extends UserInterface{
 }
 
 
 class Register extends React.Component<RegisterProps, RegisterState> {
     constructor(props: RegisterProps) {
         super(props);
-        this.state = {};
+        this.bind()
+        this.state = {
+            email: '',
+            phoneNo: '',
+            uid: '',
+            vehNo: '',
+            userType: 'user',
+            name: '',
+            id: null,
+            balance: 0
+        }
     }
+
+    bind() {
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(event: Event) {
+        const target: any = event.target
+        console.log(target.value)
+        const prop: string = target.getAttribute('data-at')
+        this.setState({
+            [prop]: target.value
+        })
+    }
+
+    handleSubmit() {
+        console.log(this.props.firebase)
+        this.props.firebase.addData(`vehicles/${this.state.vehNo}`, this.state)
+    }
+
     render() {
         return (
             <div className="container" >

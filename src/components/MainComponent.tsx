@@ -27,9 +27,10 @@ class Main extends Component {
                 {
                     uid != null ?
                         ( userType == null ?
-                            <div>Unautorizied user</div> :
+                            <FirebaseContext.Consumer>
+                                {(firebase: Firebase) => <Register firebase={firebase} uid={uid}/>}
+                            </FirebaseContext.Consumer> :
                             userType === "user" && userType != null ? <User /> : <Admin />) :
-                        // <Login />
                         <FirebaseContext.Consumer>
                             {(firebase: Firebase) => <Login firebase={firebase} />}
                         </FirebaseContext.Consumer>

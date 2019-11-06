@@ -15,9 +15,15 @@ const config = {
   measurementId: "G-MYM7JS99KE"
 }
 
+export type GetDataOptions = {
+  fieldPath: string
+  opStr: OpStr
+  value: any
+}
+
 class Firebase {
   private database: app.firestore.Firestore
-  private auth: app.auth.Auth
+  public auth: app.auth.Auth
 
   constructor() {
     this.onAuthStateChanged = this.onAuthStateChanged.bind(this)
@@ -27,7 +33,7 @@ class Firebase {
     this.auth.onAuthStateChanged(this.onAuthStateChanged)
   }
 
-  public async getData<T>(path: string, options?: any): Promise<T[]> {
+  public async getData<T>(path: string, options?: GetDataOptions): Promise<T[]> {
     const paths = path.split('/')
 
     let collection = this.database.collection(paths[0])
