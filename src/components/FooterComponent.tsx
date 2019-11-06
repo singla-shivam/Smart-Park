@@ -17,11 +17,12 @@ class Footer extends React.Component<FooterProps, FooterState> {
     render() {
         return ( 
             <>
-                <Jumbotron >
-                    <div className="text-center text-body">
-                        <h3>Head Office</h3>
-                        </div>
-            </Jumbotron>
+            <div className="jumbotron jumbotron-fluid">
+                <div className="container">
+                    <h1 className="display-3">Fluid jumbo heading</h1>
+                    
+                </div>
+            </div>
         </>
                 );
             }

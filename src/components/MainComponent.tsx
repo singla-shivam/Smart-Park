@@ -4,7 +4,13 @@ import Admin from './AdminComponent';
 import User from './UserComponent';
 import Footer from './FooterComponent';
 import Login from './LoginComponent';
+import Register from './RegisterComponent';
 import Firebase, { FirebaseContext } from '../firebase';
+
+
+// let uid: any = undefined
+// let usertype= 'user1' 
+
 
 let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
 let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
@@ -16,7 +22,7 @@ class Main extends Component {
     }
     render() {
         return (
-            <div className="container">
+            <div className="container-fluid">
                 <Header />
                 {
                     uid != null ?
@@ -29,6 +35,7 @@ class Main extends Component {
                         </FirebaseContext.Consumer>
                 }
                 <Footer />
+
 
             </div>
         );

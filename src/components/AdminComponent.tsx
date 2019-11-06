@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
-
+import {Button } from 'reactstrap';
 
 export interface AdminProps {
 }
@@ -16,7 +15,13 @@ class Admin extends React.Component<AdminProps, AdminState> {
     render() { 
         return ( 
             <div>
-                <p>ADMIN IS HERE</p>
+                <div className="jumbotron">
+                <h1 className="display-4"> Choose </h1>
+                <Button color="warning" >Entry</Button>
+                <Button color="danger" >Exit</Button>
+                <Button color="info" >Display</Button>
+                
+            </div>
             </div>
          );
     }
