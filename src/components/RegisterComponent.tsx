@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Col } from 'reactstrap';
 
 export interface RegisterProps {
-
+    openRegister: () => void,
+    Rval: boolean
 }
 
 export interface RegisterState {
@@ -16,27 +17,38 @@ class Register extends React.Component<RegisterProps, RegisterState> {
         this.state = {};
     }
     render() {
+        if (this.props.Rval==false)
+        {
+        this.props.openRegister()
+    }
+
         return (
-            <div className="container" >
-                <Form>
-                    <FormGroup>
-                        <Label for="exampleEmail">Email</Label>
-                        <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+            <div className="jumbotron" >
+                <Form className="text-left">
+                    <FormGroup row>
+                        <Label for="exampleEmail" sm={2}>Email</Label>
+                        <Col sm={10}>
+                            <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+                        </Col>
                     </FormGroup>
-                    
-                    <FormGroup>
-                        <Label for="name">Name</Label>
-                        <Input type="text" name="name" id="name" />
+                    <FormGroup row>
+                    <Label for="name">Name</Label>
+                        <Col sm={10}>
+                            <Input type="text" name="name" id="name" placeholder="with a placeholder" />
+                        </Col>
                     </FormGroup>
-                    <FormGroup>
-                        <Label for="aadharNo">Aadhar No.</Label>
-                        <Input type="text" name="aadharNo" id="aadharNo" />
+                    <FormGroup row>
+                    <Label for="aadharNo">Aadhar No</Label>
+                        <Col sm={10}>
+                            <Input type="text" name="aadharNo" id="aadharNo" placeholder="with a placeholder" />
+                        </Col>
                     </FormGroup>
-                    <FormGroup>
-                        <Label for="vehicleNumber">Vehicle Number </Label>
-                        <Input type="text" name="vehicleNumber" id="vehicleNumber" />
+                    <FormGroup row>
+                    <Label for="vehicleNo">Vehicle No</Label>
+                        <Col sm={10}>
+                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" />
+                        </Col>
                     </FormGroup>
-                    
                     <Button>Submit</Button>
                 </Form>
             </div>
