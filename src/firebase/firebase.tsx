@@ -1,5 +1,6 @@
 import app from 'firebase/app'
 import 'firebase/auth'
+import 'firebase/firestore'
 
 const config = {
   apiKey: "AIzaSyCQuZiQmLeInyNQCPcZ4JS9cMHhCIhJ5co",
@@ -13,8 +14,34 @@ const config = {
 }
 
 class Firebase {
+  private database: app.firestore.Firestore
+
   constructor() {
-    app.initializeApp(config);
+    app.initializeApp(config)
+    this.database = app.firestore()
+  }
+
+  public async getData(path: string) {
+    const paths = path.split('/')
+
+    let collection = this.database.collection(paths[0])
+
+    let document: firebase.firestore.DocumentReference
+      // query: firebase.firestore.Query
+
+    for (let i = 1, len = paths.length; i < len; i++) {
+      if (i % 2 === 0) {
+        // if it is document path
+        collection = document.collection(paths[i])
+      } else {
+        // if it is collection path
+        document = collection.doc(paths[i])
+      }
+    }
+
+    if (paths.length % 2 === 0) {
+    }
+
   }
 }
 
