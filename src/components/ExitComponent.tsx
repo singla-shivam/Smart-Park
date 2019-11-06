@@ -55,7 +55,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
                     <FormGroup row>
                         <Label for="vehicleNo" sm={2}>Vehicle No</Label>
                         <Col sm={10}>
-                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" onChange={this.handleChange} />
+                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" onChange={this.handleChange} data-at="carNumber" />
                         </Col>
                     </FormGroup>
 

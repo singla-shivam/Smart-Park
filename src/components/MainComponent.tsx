@@ -52,7 +52,7 @@ class Main extends Component<MainProps, MainState> {
                         uid != null ?
                             (userType == null ?
                                 <FirebaseContext.Consumer>
-                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid} phoneNo={phoneNo}/>}
+                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid} phoneNo={phoneNo} />}
                                 </FirebaseContext.Consumer> :
                                 userType === "user" && userType != null ? <User /> : <Admin />) : (
                                 // <Login />
@@ -73,17 +73,17 @@ class Main extends Component<MainProps, MainState> {
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
                     <Route exact path="/register" component={() => <FirebaseContext.Consumer>
-                                                                    {(firebase: Firebase) => <Register firebase={firebase} uid={null} phoneNo={null}/>}
-                                                                </FirebaseContext.Consumer>} />
+                        {(firebase: Firebase) => <Register firebase={firebase} uid={null} phoneNo={null} />}
+                    </FirebaseContext.Consumer>} />
                     <Route exact path="/entry" component={() => <FirebaseContext.Consumer>
-                                                                    {(firebase: Firebase) => <Entry firebase={firebase} />}
-                                                                </FirebaseContext.Consumer>} />
+                        {(firebase: Firebase) => <Entry firebase={firebase} />}
+                    </FirebaseContext.Consumer>} />
                     <Route exact path="/exit" component={() => <FirebaseContext.Consumer>
-                                                                    {(firebase: Firebase) => <Exit firebase={firebase} />}
-                                                                </FirebaseContext.Consumer>} />} />
+                        {(firebase: Firebase) => <Exit firebase={firebase} />}
+                    </FirebaseContext.Consumer>} />} />
                     <Route exact path="/display" component={() => <FirebaseContext.Consumer>
-                                                                    {(firebase: Firebase) => <Display firebase={firebase} />}
-                                                                </FirebaseContext.Consumer>} />} />
+                        {(firebase: Firebase) => <Display firebase={firebase} />}
+                    </FirebaseContext.Consumer>} />} />
 
                     <Redirect to="/home" />
                 </Switch>
