@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import Header from './HeaderComponent';
+import Admin from './AdminComponent';
+import User from './UserComponent';
+import Footer from './FooterComponent';
+let userid="user1"
 
 class Main extends Component {
     constructor(props: any) {
@@ -7,8 +12,11 @@ class Main extends Component {
     }
     render() { 
         return (
-            <div>
-                Hello World
+            <div className="container">
+                <Header />
+                { userid=='user'?<User/>:<Admin/> }
+                <Footer />
+
             </div>
           );
     }
