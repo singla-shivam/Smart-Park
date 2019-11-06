@@ -2,8 +2,11 @@ import * as React from 'react';
 
 import { Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
 
-export interface ExitProps {
+import Firebase from '../firebase';
 
+
+export interface ExitProps {
+    firebase: Firebase
 }
 
 export interface ExitState {

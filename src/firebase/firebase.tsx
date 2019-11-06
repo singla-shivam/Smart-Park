@@ -22,7 +22,7 @@ export type GetDataOptions = {
 }
 
 class Firebase {
-  private database: app.firestore.Firestore
+  public database: app.firestore.Firestore
   public auth: app.auth.Auth
 
   constructor() {
