@@ -17,6 +17,9 @@ import { NavLink } from 'react-router-dom';
 
 let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
 let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
+
+
 export interface MainProps {
 }
 
@@ -46,7 +49,7 @@ class Main extends Component<MainProps, MainState> {
                         uid != null ?
                             (userType == null ?
                                 <FirebaseContext.Consumer>
-                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid}/>}
+                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid} phoneNo={phoneNo}/>}
                                 </FirebaseContext.Consumer> :
                                 userType === "user" && userType != null ? <User /> : <Admin />) : (
                                 // <Login />

@@ -66,6 +66,7 @@ class Login extends React.Component<LoginProps, LoginState> {
             opStr: '==',
             value: user.phoneNumber
         })
+        localStorage.setItem('lanfklnasvph', user.phoneNumber)
         if(vehicle[0].userType) {
             localStorage.setItem('lanfklnasv', user.userType)
         }
