@@ -11,12 +11,15 @@ import { Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
 
-let uid: any = null
-let userType = 'user'
+// let uid: any = null
+// let userType = 'user'
 
 
-// let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
-// let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
+
+
 export interface MainProps {
 }
 
@@ -45,7 +48,9 @@ class Main extends Component<MainProps, MainState> {
                     ) : (
                         uid != null ?
                             (userType == null ?
-                                <div>Unautorizied user</div> :
+                                <FirebaseContext.Consumer>
+                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid} phoneNo={phoneNo}/>}
+                                </FirebaseContext.Consumer> :
                                 userType === "user" && userType != null ? <User /> : <Admin />) : (
                                 // <Login />
                                 <>
@@ -64,9 +69,6 @@ class Main extends Component<MainProps, MainState> {
                 <Header />
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
-
-                    <Route exact path="/register" component={
-                        () => <Register openRegister={this.changeRegister} Rval={this.state.openRegister}/>} />
 
                     <Redirect to="/home" />
                 </Switch>
