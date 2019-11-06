@@ -3,23 +3,30 @@ import Header from './HeaderComponent';
 import Admin from './AdminComponent';
 import User from './UserComponent';
 import Footer from './FooterComponent';
-let userid="user1"
+import Login from './LoginComponent';
+
+let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+let usertype: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
 
 class Main extends Component {
     constructor(props: any) {
         super(props);
-        this.state = {  }
+        this.state = {}
     }
-    render() { 
+    render() {
         return (
             <div className="container">
                 <Header />
-                { userid=='user'?<User/>:<Admin/> }
+                {
+                    uid != null ?
+                        ( usertype == "user" && usertype != null ? <User /> : <Admin />):
+                        ( usertype == null? <div>Unautorizied user</div>: <Login />)
+                }
                 <Footer />
 
             </div>
-          );
+        );
     }
 }
- 
+
 export default Main;
