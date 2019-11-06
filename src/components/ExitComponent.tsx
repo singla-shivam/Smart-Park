@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
 
 import Firebase from '../firebase';
+import { BookingInterface } from '../models/booking';
 
 
 export interface ExitProps {
@@ -11,8 +12,7 @@ export interface ExitProps {
 
 export interface ExitState {
     [key: string]: any
-    carNumberReceived: Boolean
-    carNumber: string
+    vehNo: string
     paymentStatus: boolean
 
 }
@@ -22,8 +22,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
     constructor(props: ExitProps) {
         super(props);
         this.state = {
-            carNumber: '',
-            carNumberReceived: false,
+            vehNo: '',
             paymentStatus: false
         };
         this.handleChange = this.handleChange.bind(this)
@@ -41,11 +40,19 @@ class Exit extends React.Component<ExitProps, ExitState> {
     async handleSubmit() {
         // TODO: validate fields
         console.log(this.state)
-        this.setState({
-            carNumberReceived: true,
-            paymentStatus: false
+        const bookings: BookingInterface[] = await this.props.firebase.getData(`booking`, {
+            fieldPath: ['vehNo', 'paymentMode'],
+            opStr: ['==', '=='],
+            value: [this.state.vehNo, null]
         })
-        // change payment status accordingly
+        // const booking: BookingInterface[] = await this.props.firebase.getData(`booking`, {
+        //     fieldPath: ['vehNo'],
+        //     opStr: ['=='],
+        //     value: [this.state.vehNo]
+        // })
+
+        const booking = bookings[0]
+        console.log(booking)
 
     }
     render() {
@@ -55,7 +62,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
                     <FormGroup row>
                         <Label for="vehicleNo" sm={2}>Vehicle No</Label>
                         <Col sm={10}>
-                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" onChange={this.handleChange} data-at="carNumber" />
+                            <Input type="text" name="vehicleNo" id="vehicleNo" onChange={this.handleChange} data-at="vehNo" />
                         </Col>
                     </FormGroup>
 
@@ -72,7 +79,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
         return (
             <div>
                 {
-                    this.state.carNumberReceived==false ? (
+                    true ? (
                         <>
                         {receiveForm()}
                         </>
