@@ -48,15 +48,19 @@ class Register extends React.Component<RegisterProps, RegisterState> {
 
     async handleSubmit() {
         // TODO: validate fields
-        console.log(this.props.firebase)
         console.log(this.state)
         await this.props.firebase.addData(`vehicles/${this.state.vehNo}`, this.state)
-        localStorage.setItem('lanfklnasv', 'user')
-        window.location.reload()
+        if(this.props.uid) {
+            localStorage.setItem('lanfklnasv', 'user')
+            window.location.reload()
+        }
+        else {
+            window.location.href = '/entry'
+        }
     }
 
     render() {
-        if (this.props.Rval==false)
+        if (this.props.Rval === false)
         {
         this.props.openRegister()
     }
@@ -70,24 +74,38 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                             <Input type="email" name="email" id="exampleEmail" onChange={this.handleChange} data-at='email' />
                         </Col>
                     </FormGroup>
+
                     <FormGroup row>
                     <Label for="name" sm={2}>Name</Label>
                         <Col sm={10}>
                             <Input type="text" name="name" id="name" onChange={this.handleChange} data-at='name' />
                         </Col>
                     </FormGroup>
+
                     <FormGroup row>
                     <Label for="aadharNo" sm={2}>Aadhar No</Label>
                         <Col sm={10}>
                             <Input type="text" name="aadharNo" id="aadharNo" onChange={this.handleChange} data-at='id' />
                         </Col>
                     </FormGroup>
+
+                    {!this.props.phoneNo ? 
+                        <FormGroup row>
+                        <Label for="phoneNo" sm={2}>Mobile Number</Label>
+                            <Col sm={10}>
+                                <Input type="text" name="phoneNo" id="phoneNo" onChange={this.handleChange} data-at='phoneNo' />
+                            </Col>
+                        </FormGroup> :
+                        <></>
+                    }
+
                     <FormGroup row>
                     <Label for="vehicleNo" sm={2}>Vehicle No</Label>
                         <Col sm={10}>
                             <Input type="text" name="vehicleNo" id="vehicleNo" onChange={this.handleChange} data-at='vehNo' />
                         </Col>
                     </FormGroup>
+
                     <Button onClick={this.handleSubmit}>Submit</Button>
                 </Form>
             </div>

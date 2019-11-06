@@ -1,6 +1,7 @@
 import * as React from 'react';
+import Firebase from '../firebase';
 export interface ExitProps {
-    
+    firebase: Firebase
 }
  
 export interface ExitState {
