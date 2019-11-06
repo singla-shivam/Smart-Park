@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Button } from 'reactstrap';
 
 export interface UserProps {
     
@@ -8,6 +8,9 @@ export interface UserProps {
 export interface UserState {
     
 }
+
+let Pname = "Mukesh bhai"
+
  
 class User extends React.Component<UserProps, UserState> {
     constructor(props: UserProps) {
@@ -16,8 +19,10 @@ class User extends React.Component<UserProps, UserState> {
     }
     render() { 
         return (  
-            <div>
-                <p>USER IS HERE</p>
+            <div className="jumbotron">
+                <h1 className="display-4"> Welcome to {Pname} </h1>
+                <Button color="warning" >Book Slot</Button>
+                
             </div>
         );
     }

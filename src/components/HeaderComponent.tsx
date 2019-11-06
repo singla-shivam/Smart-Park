@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse } from "reactstrap";
+import Register from './RegisterComponent';
 
 export type HeaderProps = {}
 
@@ -23,11 +24,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     render() {
         return (
             <div className="continer-fluid">
-                <Navbar expand="md" className="fixed-top">
+                <Navbar color="primary" expand="md" className="fixed-top">
                     <NavbarToggler onClick={this.toggleNav} ><i className="fa fa-bars text-dark" style={{ fontSize: "24px" }}></i></NavbarToggler>
-                    <NavbarBrand className="mr-auto" >
-                        <img src="#"/>
-                    </NavbarBrand>
+
                     <Collapse isOpen={this.state.isNavOpen} navbar >
                         <Nav navbar className="ml-auto">
                             <NavItem>
@@ -36,6 +35,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                             <NavItem>
                                 <span className="fa fa-group fa-lg"></span> LOGOUT
                             </NavItem>
+                            {/* <NavItem>
+                                <a onClick={() => (<Register />)}><span className="fa fa-registered" ></span>Register</a>
+                            </NavItem> */}
                         </Nav>
                     </Collapse>
                 </Navbar>
