@@ -14,12 +14,15 @@ import Exit from './ExitComponent';
 import Display from './DisplayComponent';
 
 
-let uid: any = 123
-let userType = 'user1'
+// let uid: any = 123
+// let userType = 'user1'
 
 
-// let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
-// let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
+
+
 export interface MainProps {
 }
 
@@ -48,7 +51,9 @@ class Main extends Component<MainProps, MainState> {
                     ) : (
                         uid != null ?
                             (userType == null ?
-                                <div>Unautorizied user</div> :
+                                <FirebaseContext.Consumer>
+                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid} phoneNo={phoneNo}/>}
+                                </FirebaseContext.Consumer> :
                                 userType === "user" && userType != null ? <User /> : <Admin />) : (
                                 // <Login />
                                 <>
@@ -70,9 +75,6 @@ class Main extends Component<MainProps, MainState> {
                     <Route exact path="/entry" component={() => <Entry/>} />
                     <Route exact path="/exit" component={() => <Exit />} />
                     <Route exact path="/display" component={() => <Display />} />
-
-                    <Route exact path="/register" component={
-                        () => <Register openRegister={this.changeRegister} Rval={this.state.openRegister}/>} />
 
                     <Redirect to="/home" />
                 </Switch>

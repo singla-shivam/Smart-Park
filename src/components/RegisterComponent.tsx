@@ -1,21 +1,60 @@
 import * as React from 'react';
+import { UserInterface } from '../models/user';
+import Firebase from '../firebase';
 import { Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
 
 export interface RegisterProps {
-    openRegister: () => void,
-    Rval: boolean
+    firebase: Firebase
+    uid: string
+    phoneNo: string
+    openRegister?: () => void,
+    Rval?: boolean
 }
 
-export interface RegisterState {
 
+export interface RegisterState  extends UserInterface{
 }
 
 
 class Register extends React.Component<RegisterProps, RegisterState> {
     constructor(props: RegisterProps) {
         super(props);
-        this.state = {};
+        this.bind()
+        this.state = {
+            email: '', // -
+            phoneNo: this.props.phoneNo,
+            uid: this.props.uid,
+            vehNo: '', // -
+            userType: 'user',
+            name: '', // -
+            id: null, // - 
+            balance: 0
+        }
     }
+
+    bind() {
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(event: any) {
+        const target: any = event.target
+        console.log(target.value)
+        const prop: string = target.getAttribute('data-at')
+        this.setState({
+            [prop]: target.value
+        })
+    }
+
+    async handleSubmit() {
+        // TODO: validate fields
+        console.log(this.props.firebase)
+        console.log(this.state)
+        await this.props.firebase.addData(`vehicles/${this.state.vehNo}`, this.state)
+        localStorage.setItem('lanfklnasv', 'user')
+        window.location.reload()
+    }
+
     render() {
         if (this.props.Rval==false)
         {
@@ -28,28 +67,28 @@ class Register extends React.Component<RegisterProps, RegisterState> {
                     <FormGroup row>
                         <Label for="exampleEmail" sm={2}>Email</Label>
                         <Col sm={10}>
-                            <Input type="email" name="email" id="exampleEmail" placeholder="with a placeholder" />
+                            <Input type="email" name="email" id="exampleEmail" onChange={this.handleChange} data-at='email' />
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                    <Label for="name">Name</Label>
+                    <Label for="name" sm={2}>Name</Label>
                         <Col sm={10}>
-                            <Input type="text" name="name" id="name" placeholder="with a placeholder" />
+                            <Input type="text" name="name" id="name" onChange={this.handleChange} data-at='name' />
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                    <Label for="aadharNo">Aadhar No</Label>
+                    <Label for="aadharNo" sm={2}>Aadhar No</Label>
                         <Col sm={10}>
-                            <Input type="text" name="aadharNo" id="aadharNo" placeholder="with a placeholder" />
+                            <Input type="text" name="aadharNo" id="aadharNo" onChange={this.handleChange} data-at='id' />
                         </Col>
                     </FormGroup>
                     <FormGroup row>
-                    <Label for="vehicleNo">Vehicle No</Label>
+                    <Label for="vehicleNo" sm={2}>Vehicle No</Label>
                         <Col sm={10}>
-                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" />
+                            <Input type="text" name="vehicleNo" id="vehicleNo" onChange={this.handleChange} data-at='vehNo' />
                         </Col>
                     </FormGroup>
-                    <Button>Submit</Button>
+                    <Button onClick={this.handleSubmit}>Submit</Button>
                 </Form>
             </div>
         );

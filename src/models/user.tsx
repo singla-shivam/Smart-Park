@@ -7,8 +7,9 @@ export interface UserInterface {
   uid: UID
   vehNo: string
   /** Aadhar ID */
-  id: String
+  id: number
   userType: 'user' | 'admin'
   /** the pending fee */
   balance: number
+  [key: string] : any
 }
