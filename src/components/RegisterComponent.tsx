@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
 
 export interface RegisterProps {
     openRegister: () => void,

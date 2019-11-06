@@ -9,10 +9,13 @@ import { Switch, Redirect, Route } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../firebase';
 import { Button } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import Entry from './EntryComponent';
+import Exit from './ExitComponent';
+import Display from './DisplayComponent';
 
 
-let uid: any = null
-let userType = 'user'
+let uid: any = 123
+let userType = 'user1'
 
 
 // let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
@@ -64,6 +67,9 @@ class Main extends Component<MainProps, MainState> {
                 <Header />
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
+                    <Route exact path="/entry" component={() => <Entry/>} />
+                    <Route exact path="/exit" component={() => <Exit />} />
+                    <Route exact path="/display" component={() => <Display />} />
 
                     <Route exact path="/register" component={
                         () => <Register openRegister={this.changeRegister} Rval={this.state.openRegister}/>} />
