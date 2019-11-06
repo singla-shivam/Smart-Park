@@ -45,7 +45,7 @@ class Main extends Component<MainProps, MainState> {
     render() {
         const Default = () => {
             return (
-                this.state.openRegister == true ?
+                this.state.openRegister === true ?
                     (
                         <div>REFRESH</div>
                     ) : (
@@ -72,9 +72,18 @@ class Main extends Component<MainProps, MainState> {
                 <Header />
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
-                    <Route exact path="/entry" component={() => <Entry/>} />
-                    <Route exact path="/exit" component={() => <Exit />} />
-                    <Route exact path="/display" component={() => <Display />} />
+                    <Route exact path="/register" component={() => <FirebaseContext.Consumer>
+                                                                    {(firebase: Firebase) => <Register firebase={firebase} uid={null} phoneNo={null}/>}
+                                                                </FirebaseContext.Consumer>} />
+                    <Route exact path="/entry" component={() => <FirebaseContext.Consumer>
+                                                                    {(firebase: Firebase) => <Entry firebase={firebase} />}
+                                                                </FirebaseContext.Consumer>} />
+                    <Route exact path="/exit" component={() => <FirebaseContext.Consumer>
+                                                                    {(firebase: Firebase) => <Exit firebase={firebase} />}
+                                                                </FirebaseContext.Consumer>} />} />
+                    <Route exact path="/display" component={() => <FirebaseContext.Consumer>
+                                                                    {(firebase: Firebase) => <Display firebase={firebase} />}
+                                                                </FirebaseContext.Consumer>} />} />
 
                     <Redirect to="/home" />
                 </Switch>
