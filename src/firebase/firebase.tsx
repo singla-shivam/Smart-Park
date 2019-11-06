@@ -15,10 +15,12 @@ const config = {
 
 class Firebase {
   private database: app.firestore.Firestore
+  private auth: app.auth.Auth
 
   constructor() {
     app.initializeApp(config)
     this.database = app.firestore()
+    this.auth = app.auth()
   }
 
   public async getData(path: string) {
@@ -41,7 +43,6 @@ class Firebase {
 
     if (paths.length % 2 === 0) {
     }
-
   }
 }
 
