@@ -67,7 +67,7 @@ class Login extends React.Component<LoginProps, LoginState> {
             value: user.phoneNumber
         })
         localStorage.setItem('lanfklnasvph', user.phoneNumber)
-        if(vehicle[0].userType) {
+        if(vehicle && vehicle[0].userType) {
             // vehicle already registered
             localStorage.setItem('lanfklnasv', user.userType)
             if(!vehicle[0].uid) {
