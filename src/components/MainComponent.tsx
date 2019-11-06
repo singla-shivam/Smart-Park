@@ -5,36 +5,71 @@ import User from './UserComponent';
 import Footer from './FooterComponent';
 import Login from './LoginComponent';
 import Register from './RegisterComponent';
+import { Switch, Redirect, Route } from 'react-router-dom';
 import Firebase, { FirebaseContext } from '../firebase';
+import { Button } from 'reactstrap';
+import { NavLink } from 'react-router-dom';
 
 
-// let uid: any = undefined
-// let usertype= 'user1' 
+// let uid: any = null
+// let userType = 'user'
 
 
 let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
 let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+export interface MainProps {
+}
 
-class Main extends Component {
-    constructor(props: any) {
+export interface MainState {
+    openRegister: boolean
+}
+class Main extends Component<MainProps, MainState> {
+    constructor(props: MainProps) {
         super(props);
-        this.state = {}
+        this.state = {
+            openRegister: false
+        }
+        this.changeRegister = this.changeRegister.bind(this);
+    }
+    changeRegister() {
+        this.setState({
+            openRegister: true
+        })
     }
     render() {
+        const Default = () => {
+            return (
+                this.state.openRegister == true ?
+                    (
+                        <div>REFRESH</div>
+                    ) : (
+                        uid != null ?
+                            (userType == null ?
+                                <FirebaseContext.Consumer>
+                                    {(firebase: Firebase) => <Register firebase={firebase} uid={uid}/>}
+                                </FirebaseContext.Consumer> :
+                                userType === "user" && userType != null ? <User /> : <Admin />) : (
+                                // <Login />
+                                <>
+                                    <FirebaseContext.Consumer>
+                                        {(firebase: Firebase) => <Login firebase={firebase} />}
+                                    </FirebaseContext.Consumer>
+                                    <NavLink className="nav-link  text-dark" to="/register" >
+                                        <Button color="primary" >Register</Button>
+                                    </NavLink>
+                                </>)
+                    )
+            )
+        }
         return (
             <div className="container-fluid">
                 <Header />
-                {
-                    uid != null ?
-                        ( userType == null ?
-                            <FirebaseContext.Consumer>
-                                {(firebase: Firebase) => <Register firebase={firebase} uid={uid}/>}
-                            </FirebaseContext.Consumer> :
-                            userType === "user" && userType != null ? <User /> : <Admin />) :
-                        <FirebaseContext.Consumer>
-                            {(firebase: Firebase) => <Login firebase={firebase} />}
-                        </FirebaseContext.Consumer>
-                }
+                <Switch>
+                    <Route exact path="/home" component={() => <Default />} />
+
+                    <Redirect to="/home" />
+                </Switch>
+
                 <Footer />
 
 

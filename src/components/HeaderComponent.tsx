@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse } from "reactstrap";
 import Register from './RegisterComponent';
+import { NavLink } from 'react-router-dom';
 
 export type HeaderProps = {}
 
@@ -24,14 +25,18 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     render() {
         return (
             <div className="continer-fluid">
-                <Navbar color="primary" expand="md" className="fixed-top">
-                    <NavbarToggler onClick={this.toggleNav} ><i className="fa fa-bars text-dark" style={{ fontSize: "24px" }}></i></NavbarToggler>
+                <Navbar color="primary" expand="md" >
+                    <NavbarToggler onClick={this.toggleNav} >
+                        <i className="fa fa-bars text-dark" style={{ fontSize: "24px" }}></i>
+                    </NavbarToggler>
 
                     <Collapse isOpen={this.state.isNavOpen} navbar >
                         <Nav navbar className="ml-auto">
                             <NavItem>
-                                <span className="fa fa-home fa-lg"></span> Home
-                                </NavItem>
+                                <NavLink className="nav-link  text-dark" to="/home" >
+
+                                    <span className="fa fa-home fa-lg"></span> Home
+                            </NavLink>    </NavItem>
                             <NavItem>
                                 <span className="fa fa-group fa-lg"></span> LOGOUT
                             </NavItem>
