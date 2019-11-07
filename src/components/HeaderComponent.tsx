@@ -27,7 +27,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             <div className="continer-fluid">
                 <Navbar color="primary" expand="md" >
                     <NavbarToggler onClick={this.toggleNav} >
-                        <i className="fa fa-bars text-dark" style={{ fontSize: "24px" }}></i>
+                        <i className="fa fa-bars text-light" style={{ fontSize: "24px" }}></i>
                     </NavbarToggler>
                     <NavbarBrand className="mr-auto" >
                         <img src="assets/logo.png" className="logo-navbar img-responsive" alt="SNS" height="60" width="70" />
@@ -35,13 +35,20 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                     <Collapse isOpen={this.state.isNavOpen} navbar >
                         <Nav navbar className="ml-auto">
                             <NavItem>
-                                <NavLink className="nav-link  text-dark" to="/home" >
+                                <NavLink className="nav-link  text-light" to="/home" >
 
                                     <span className="fa fa-home fa-lg"></span> Home
-                            </NavLink>    </NavItem>
-                            <NavItem>
-                                <span className="fa fa-group fa-lg"></span> LOGOUT
+                            </NavLink>
                             </NavItem>
+
+                            {/* implement sign out */}
+
+                            <NavItem className="text-light">
+                                <NavLink to="/home" className="nav-link  text-light">
+                                    <span className="fa fa-sign-out fa-lg"></span> LOGOUT
+                                </NavLink>
+                            </NavItem>
+
                             {/* <NavItem>
                                 <a onClick={() => (<Register />)}><span className="fa fa-registered" ></span>Register</a>
                             </NavItem> */}
