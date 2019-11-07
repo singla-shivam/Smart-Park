@@ -20,6 +20,7 @@ class Billing extends React.Component<BillingProps, BillingState> {
         this.state = {
         };
     }
+    
     render() {
         const {expectedCheckoutTime, arrivalTime, dynamicCharges} = this.props.booking
         const timeDuration = expectedCheckoutTime - arrivalTime
@@ -58,7 +59,6 @@ class Billing extends React.Component<BillingProps, BillingState> {
                         </Col >
                         <Col sm={4}></Col>
                 </div>
-                <NavLink to="#"> <Button color="success">Complete Your Payment</Button></NavLink>
             </div>
         );
     }
