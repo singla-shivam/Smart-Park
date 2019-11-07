@@ -20,3 +20,9 @@
 .App-link {
   color: #09d3ac;
 }
+
+
+.navbar-default {
+  background-color: #D32F2F;
+  border-color: #D32F2F;
+}
