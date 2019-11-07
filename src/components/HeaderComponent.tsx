@@ -2,8 +2,12 @@ import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse } from "reactstrap";
 import Register from './RegisterComponent';
 import { NavLink } from 'react-router-dom';
+import Firebase from '../firebase';
+import { SlotInterface } from '../models/slot';
 
-export type HeaderProps = {}
+export type HeaderProps = {
+    firebase: Firebase
+}
 
 export type HeaderState = {
     isNavOpen: boolean
@@ -16,13 +20,20 @@ class Header extends React.Component<HeaderProps, HeaderState> {
             isNavOpen: false,
         }
         this.toggleNav = this.toggleNav.bind(this);
+        this.logout = this.logout.bind(this);
     }
+
     toggleNav() {
         this.setState({
             isNavOpen: !this.state.isNavOpen
         })
     }
+
+    logout() {
+        this.props.firebase.logout()
+    }
     render() {
+
         return (
             <div className="continer-fluid">
                 <Navbar color="primary" expand="md" >
@@ -43,11 +54,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
                             {/* implement sign out */}
 
-                            <NavItem className="text-light">
-                                <NavLink to="/home" className="nav-link  text-light">
-                                    <span className="fa fa-sign-out fa-lg"></span> LOGOUT
-                                </NavLink>
-                            </NavItem>
+                            <div className='text-light'  onClick={this.logout}><span className="fa fa-sign-out fa-lg"></span> LOGOUT</div>
 
                             {/* <NavItem>
                                 <a onClick={() => (<Register />)}><span className="fa fa-registered" ></span>Register</a>

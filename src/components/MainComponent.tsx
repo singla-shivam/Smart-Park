@@ -15,13 +15,13 @@ import Display from './DisplayComponent';
 import Booking from './BookingComponent';
 
 
-let uid: any = 123
-let userType = 'user'
-let phoneNo= "213123"
+// let uid: any = 123
+// let userType = 'user'
+// let phoneNo= "213123
 
-// let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
-// let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
-// let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
+let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
 
 
 export interface MainProps {
@@ -61,16 +61,15 @@ class Main extends Component<MainProps, MainState> {
                                     <FirebaseContext.Consumer>
                                         {(firebase: Firebase) => <Login firebase={firebase} />}
                                     </FirebaseContext.Consumer>
-                                    <NavLink className="nav-link  text-dark" to="/register" >
-                                        <Button color="primary" >Register</Button>
-                                    </NavLink>
                                 </>)
                     )
             )
         }
         return (
             <div>
-                <Header />
+                <FirebaseContext.Consumer>
+                    {(firebase: Firebase) => <Header firebase={firebase} />}
+                </FirebaseContext.Consumer>
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
                     <Route exact path="/register" component={() => <FirebaseContext.Consumer>
