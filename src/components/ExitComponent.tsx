@@ -13,7 +13,7 @@ export interface ExitProps {
 export interface ExitState {
     [key: string]: any
     vehNo: string
-    paymentStatus: 'cash' | 'done'
+    paymentStatus: 'cash' | 'done' | 'onlinePending'
     paymentAmount: number
 
 }
@@ -33,7 +33,6 @@ class Exit extends React.Component<ExitProps, ExitState> {
     }
     handleChange(event: any) {
         const target: any = event.target
-        console.log(target.value)
         const prop: string = target.getAttribute('data-at')
         this.setState({
             [prop]: target.value
@@ -42,26 +41,51 @@ class Exit extends React.Component<ExitProps, ExitState> {
 
     async handleSubmit() {
         // TODO: validate fields
-        console.log(this.state)
         const bookings: BookingInterface[] = await this.props.firebase.getData(`booking`, {
             fieldPath: ['vehNo', 'actualCheckoutTime'],
             opStr: ['==', '=='],
             value: [this.state.vehNo, null]
         })
 
+        if(!bookings) {
+            window.location.href = '/'
+            return
+        }
+
         const booking = bookings[0]
-        console.log(booking)
+        booking.actualCheckoutTime = Date.now()
 
         if(booking.paymentMode === 'online') {
-            if(booking.actualCheckoutTime- booking.paymentTime <= 15 * 60 * 1000) {
+            if(booking.actualCheckoutTime - booking.paymentTime <= 15 * 60 * 1000) {
                 // all ok
                 this.setState({
                     paymentStatus: 'done'
+                })
+
+                await this.props.firebase.database.collection(`booking`).doc(booking.id).set(booking, {
+                    merge: true
                 })
             }
             else {
                 // payment done long ago
                 // fine vasoolo
+                const timeDuration = booking.actualCheckoutTime - booking.arrivalTime
+                const n = Math.ceil(timeDuration / (1000 * 60 * 60 * 24))
+                let price = 0
+        
+                if(timeDuration > 12 * 60 * 60 * 1000) {
+                    // more than 12 hrs
+                    price = n * 200 * booking.dynamicCharges
+                }
+                else {
+                    price = n * 20 * booking.dynamicCharges
+                }
+
+                this.setState({
+                    paymentStatus: 'onlinePending',
+                    paymentAmount: price - booking.actualPrice
+                })
+
             }
         }
 
@@ -96,7 +120,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
 
         booking.actualCheckoutTime = Date.now()
         booking.paymentTime = booking.actualCheckoutTime
-        booking.actualPrice = this.state.paymentAmount
+        booking.actualPrice = this.state.paymentStatus === 'cash' ? this.state.paymentAmount : this.state.paymentAmount + booking.actualPrice
         booking.paymentMode = 'cash'
 
         await this.props.firebase.database.collection(`booking`).doc(booking.id).set(booking, {
