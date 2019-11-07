@@ -13,6 +13,7 @@ import Entry from './EntryComponent';
 import Exit from './ExitComponent';
 import Display from './DisplayComponent';
 import Booking from './BookingComponent';
+import Billing from './BillingComponent';
 
 
 let uid: any = 123
@@ -61,9 +62,6 @@ class Main extends Component<MainProps, MainState> {
                                     <FirebaseContext.Consumer>
                                         {(firebase: Firebase) => <Login firebase={firebase} />}
                                     </FirebaseContext.Consumer>
-                                    <NavLink className="nav-link  text-dark" to="/register" >
-                                        <Button color="primary" >Register</Button>
-                                    </NavLink>
                                 </>)
                     )
             )
@@ -87,6 +85,9 @@ class Main extends Component<MainProps, MainState> {
                     </FirebaseContext.Consumer>} />} />
                     <Route exact path='/booking' component={() => <FirebaseContext.Consumer>
                         {(firebase: Firebase) => <Booking firebase={firebase} />}
+                    </FirebaseContext.Consumer>} />}
+                    <Route exact path='/bill' component={() => <FirebaseContext.Consumer>
+                        {(firebase: Firebase) => <Billing firebase={firebase} />}
                     </FirebaseContext.Consumer>} />}
                     <Redirect to="/home" />
                 </Switch>

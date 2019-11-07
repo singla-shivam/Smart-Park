@@ -5,6 +5,7 @@ import Firebase from '../firebase';
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { UserInterface } from '../models/user';
 import { BookingInterface } from '../models/booking';
+import { NavLink } from 'react-router-dom';
 
 export interface BookingProps {
     firebase: Firebase
@@ -157,7 +158,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
                 {
                     this.state.expectedPaymentAmount !== null ? <div>
                         Your Amount {this.state.expectedPaymentAmount} <br/>
-                    <Button color="success" onClick={()=>{this.confirmBooking()}}>Confirm Booking</Button>
+                    <NavLink to="/bill"> <Button color="success" onClick={()=>{this.confirmBooking()}}>Confirm Booking</Button></NavLink>
                     </div> :
                     receiveForm()
                     }
