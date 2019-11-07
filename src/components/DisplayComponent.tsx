@@ -2,6 +2,7 @@ import * as React from 'react';
 import Firebase from '../firebase';
 
 import { Button, Form, FormGroup, Label, Input, Col } from 'reactstrap';
+import { SlotInterface } from '../models/slot';
 
 export interface DisplayProps {
     firebase: Firebase
@@ -10,7 +11,7 @@ export interface DisplayProps {
 export interface DisplayState {
     [key: string]: any
     carNumberReceived: Boolean
-    carNumber: string
+    vehNo: string
     available: Boolean
 }
 
@@ -18,7 +19,7 @@ class Display extends React.Component<DisplayProps, DisplayState> {
     constructor(props: DisplayProps) {
         super(props);
         this.state = {
-            carNumber: '',
+            vehNo: '',
             carNumberReceived: false,
             available: false
         };
@@ -43,6 +44,15 @@ class Display extends React.Component<DisplayProps, DisplayState> {
             available: false
         })
         // change payment status accordingly
+        const bookings: SlotInterface[] = await this.props.firebase.getData(`slots`, {
+            fieldPath: ['uid'],
+            opStr: ['=='],
+            value: [this.state.vehNo]
+        })
+        
+        this.setState({
+            available: bookings ? true : false
+        })
 
     }
     render() {
