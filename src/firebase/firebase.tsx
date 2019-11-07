@@ -33,6 +33,11 @@ class Firebase {
     this.auth.onAuthStateChanged(this.onAuthStateChanged)
   }
 
+  logout() {
+    console.log('here')
+    this.auth.signOut()
+  }
+
   public async getData<T>(path: string, options?: GetDataOptions): Promise<T[]> {
     const paths = path.split('/')
 
@@ -128,9 +133,10 @@ class Firebase {
     if(user) {
 
     } else {
-      if(localStorage.getItem('')) {
+      if(localStorage.getItem('jsadfkhewjdewbfdgqweu')) {
         localStorage.clear()
         window.location.reload()
+        window.location.href = '/'
       }
     }
   }

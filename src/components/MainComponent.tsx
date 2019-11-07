@@ -61,16 +61,15 @@ class Main extends Component<MainProps, MainState> {
                                     <FirebaseContext.Consumer>
                                         {(firebase: Firebase) => <Login firebase={firebase} />}
                                     </FirebaseContext.Consumer>
-                                    <NavLink className="nav-link  text-dark" to="/register" >
-                                        <Button color="primary" >Register</Button>
-                                    </NavLink>
                                 </>)
                     )
             )
         }
         return (
             <div>
-                <Header />
+                <FirebaseContext.Consumer>
+                    {(firebase: Firebase) => <Header firebase={firebase} />}
+                </FirebaseContext.Consumer>
                 <Switch>
                     <Route exact path="/home" component={() => <Default />} />
                     <Route exact path="/register" component={() => <FirebaseContext.Consumer>

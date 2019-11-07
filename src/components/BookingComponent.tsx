@@ -5,6 +5,7 @@ import Firebase from '../firebase';
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { UserInterface } from '../models/user';
 import { BookingInterface } from '../models/booking';
+import { SlotInterface } from '../models/slot';
 
 export interface BookingProps {
     firebase: Firebase
@@ -66,11 +67,17 @@ class Booking extends React.Component<BookingProps, BookingState> {
             opStr: '==',
             value: vehNo
         })
-        // change payment status accordingly
+
+        const slots: SlotInterface[] =  await this.props.firebase.getData(`slots`, {
+            fieldPath: 'booked',
+            opStr: '==',
+            value: false
+        })
+
+        console.log(slots)
 
         const slotInfo: any = await this.props.firebase.getData(`info/slots`)
         const emptiness: number = slotInfo[0].empty / slotInfo[0].total
-        const slot = 'A01'
 
         let arrivalTimeStamp, depDate
         let hrs = parseInt(this.state.aTime.trim().substr(0, 2))
@@ -85,7 +92,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
             dynamicCharges: emptiness < 0.5 ? 1 - 2 * emptiness : 0,
             uid: vehicle[0].uid,
             vehNo: vehNo,
-            slot: slot,
+            slot: null,
             arrivalTime: arrivalTimeStamp,
             expectedCheckoutTime: depDate,
             actualCheckoutTime: null,
@@ -107,6 +114,29 @@ class Booking extends React.Component<BookingProps, BookingState> {
         else {
             price = Math.ceil(n * 20 * (1 + this.booking.dynamicCharges))
         }
+
+        // calculate slot
+        let slot = 'A012'
+        const totalNoOfSlots = slots.length
+        if(timeDuration > 7 * 24 * 60 * 60 * 1000) {
+            // more than two days
+            const max = totalNoOfSlots, min = Math.floor(2 * totalNoOfSlots / 3)
+            const random = Math.ceil(Math.random() * (max - min) + min)
+            slot = slots[random].slotId
+        }
+        else if(timeDuration <= 7 * 24 * 60 * 60 * 1000 && timeDuration > 1 * 24 * 60 * 60 * 1000) {
+            const max =  Math.floor(2 * totalNoOfSlots / 3), min = Math.floor(1 * totalNoOfSlots / 3)
+            const random = Math.ceil(Math.random() * (max - min) + min)
+            slot = slots[random].slotId
+        }
+        else {
+            const max =  Math.floor(1 * totalNoOfSlots / 3), min = 0
+            const random = Math.ceil(Math.random() * (max - min) + min)
+            slot = slots[random].slotId
+        }
+
+        this.booking.slot = slot
+
         this.setState({
             expectedPaymentAmount: price
         })
