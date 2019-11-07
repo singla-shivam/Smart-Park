@@ -4,6 +4,7 @@ import Register from './RegisterComponent';
 import Firebase from '../firebase';
 import { SlotInterface } from '../models/slot';
 import { NavLink } from 'react-router-dom';
+import '../App.css';
 
 export type HeaderProps = {
     firebase: Firebase
@@ -35,8 +36,8 @@ class Header extends React.Component<HeaderProps, HeaderState> {
     render() {
 
         return (
-            <div className="continer-fluid">
-                <Navbar color="primary" expand="md" className="py-0 px-2" >
+            <div className="continer-fluid ">
+                <Navbar  expand="sm" className="navbar-default" >
                     <NavbarToggler onClick={this.toggleNav} >
                         <i className="fa fa-bars text-light" style={{ fontSize: "24px" }}></i>
                     </NavbarToggler>
@@ -54,7 +55,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
                             {/* implement sign out */}
 
-                            <NavLink to="/home">
+                            <NavLink to="/home" className="nav-link  text-light" >
                                 <div className='text-light'  onClick={this.logout}><span className="fa fa-sign-out fa-lg"></span> LOGOUT</div>
 </NavLink>
                             {/* <NavItem>
