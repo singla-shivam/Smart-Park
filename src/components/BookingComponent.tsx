@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import Firebase from '../firebase';
+import Firebase, { FirebaseContext } from '../firebase';
 
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { UserInterface } from '../models/user';
@@ -8,6 +8,7 @@ import { BookingInterface } from '../models/booking';
 import { NavLink } from 'react-router-dom';
 import { SlotInterface } from '../models/slot';
 import {getSlot} from './../utitlites'
+import Billing from './BillingComponent';
 
 export interface BookingProps {
     firebase: Firebase
@@ -21,6 +22,7 @@ export interface BookingState {
     aDate: string
     aTime: string
     expectedPaymentAmount: Number
+    billing: boolean
 }
 
 class Booking extends React.Component<BookingProps, BookingState> {
@@ -33,13 +35,14 @@ class Booking extends React.Component<BookingProps, BookingState> {
             dTime: "",
             aTime: "",
             expectedPaymentAmount: null,
+            billing: false
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
 
     async confirmBooking(){
-        await this.props.firebase.addData(`booking`, this.booking)
+        this.booking = await this.props.firebase.addData(`booking`, this.booking)
         await this.props.firebase.database.collection('slots')
             .doc(this.booking.slot).update({
                 booked: true,
@@ -47,8 +50,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
                 uid: this.booking.vehNo
             })
         this.setState({
-            amount:0,
-            amountReceived: false
+            billing: true
         })
     }
 
@@ -121,6 +123,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
         let slot = getSlot(slots, timeDuration)
 
         this.booking.slot = slot
+        console.log(slot)
 
         this.setState({
             expectedPaymentAmount: price
@@ -178,11 +181,19 @@ class Booking extends React.Component<BookingProps, BookingState> {
         return ( 
             <div>
                 {
-                    this.state.expectedPaymentAmount !== null ? <div>
-                        Your Amount {this.state.expectedPaymentAmount} <br/>
-                    <NavLink to="/bill"> <Button color="success" onClick={()=>{this.confirmBooking()}}>Confirm Booking</Button></NavLink>
-                    </div> :
-                    receiveForm()
+                    this.state.expectedPaymentAmount !== null ?
+                        <div>
+                            {this.state.billing ?
+                                <FirebaseContext.Consumer>
+                                    {(firebase: Firebase) => <Billing firebase={firebase} booking={this.booking}/>}
+                                </FirebaseContext.Consumer> :
+                                <>
+                                    Your Amount {this.state.expectedPaymentAmount} <br/>
+                                    <Button color="success" onClick={()=>{this.confirmBooking()}}>Confirm Booking</Button>
+                                </>
+                            }
+                        </div> :
+                        receiveForm()
                     }
                 
             </div>
