@@ -16,9 +16,9 @@ const config = {
 }
 
 export type GetDataOptions = {
-  fieldPath: string
-  opStr: OpStr
-  value: any
+  fieldPath: string | string[]
+  opStr: OpStr | OpStr[]
+  value: any | any[]
 }
 
 class Firebase {
@@ -60,13 +60,21 @@ class Firebase {
       let docs: firebase.firestore.QueryDocumentSnapshot[] = [],
         query: firebase.firestore.Query
         
-      if(typeof options.fieldPath == 'string'){
-        // query provided
-        query = collection.where(options.fieldPath, options.opStr as OpStr, options.value)
-      }
-      else {
+      if(!options) {
         // no query provided
         query = collection
+      }
+      else if(typeof options.fieldPath == 'string'){
+        // query provided
+        query = collection.where(options.fieldPath, options.opStr as OpStr, options.value)
+        
+      }
+      else {
+        query = collection
+        for(let i = 0; i < options.fieldPath.length; i++) {
+          console.log(options.fieldPath[i], options.opStr[i], options.value[i])
+          query = query.where(options.fieldPath[i], options.opStr[i] as OpStr, options.value[i])
+        }
       }
 
       docs = (await query.get()).docs
