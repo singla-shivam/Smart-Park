@@ -34,6 +34,12 @@ class Booking extends React.Component<BookingProps, BookingState> {
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
+    confirmBooking(){
+        this.setState({
+            amount:0,
+            amountReceived: false
+        })
+    }
     handleChange(event: any) {
         const target: any = event.target
         console.log(target.value)
@@ -94,14 +100,17 @@ class Booking extends React.Component<BookingProps, BookingState> {
                         </Col>
                     </Row>
 
-                    <Button onClick={this.handleSubmit}>Confirm</Button>
+                    <Button onClick={this.handleSubmit}>Continue</Button>
                 </Form>
             )
         }
 
         return ( 
             <div>
-                {this.state.amountReceived? <div>Your Amount {this.state.amount}</div> :
+                {this.state.amountReceived? <div>
+                    Your Amount {this.state.amount} <br/>
+                    <Button color="success" onClick={()=>{this.confirmBooking()}}>Confirm Booking</Button>
+                    </div> :
                     receiveForm()}
                 
             </div>

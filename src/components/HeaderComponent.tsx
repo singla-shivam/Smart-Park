@@ -30,7 +30,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
                         <i className="fa fa-bars text-light" style={{ fontSize: "24px" }}></i>
                     </NavbarToggler>
                     <NavbarBrand className="mr-auto" >
-                        <img src="assets/logo.png" className="logo-navbar img-responsive" alt="SNS" height="60" width="70" />
+                        <img src="assets/logo3.png" className="logo-navbar img-responsive" alt="SNS" height="60" width="70" />
                     </NavbarBrand>
                     <Collapse isOpen={this.state.isNavOpen} navbar >
                         <Nav navbar className="ml-auto">

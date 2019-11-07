@@ -122,7 +122,8 @@ class Exit extends React.Component<ExitProps, ExitState> {
         booking.paymentTime = booking.actualCheckoutTime
         booking.actualPrice = this.state.paymentStatus === 'cash' ? this.state.paymentAmount : this.state.paymentAmount + booking.actualPrice
         booking.paymentMode = 'cash'
-
+// TODO
+// Update slots
         await this.props.firebase.database.collection(`booking`).doc(booking.id).set(booking, {
             merge: true
         })
