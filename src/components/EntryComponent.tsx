@@ -92,7 +92,9 @@ class Entry extends React.Component<EntryProps, EntryState> {
             expectedCheckoutTime: depDate,
             actualCheckoutTime: null,
             actualPrice: null,
-            paymentMode: null
+            paymentMode: null,
+            paymentTime: null,
+            id: '???'
         }
 
         await this.props.firebase.addData(`booking`, booking)

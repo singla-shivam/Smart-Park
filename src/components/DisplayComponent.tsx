@@ -52,7 +52,7 @@ class Display extends React.Component<DisplayProps, DisplayState> {
                     <FormGroup row>
                         <Label for="vehicleNo" sm={2}>Vehicle No</Label>
                         <Col sm={10}>
-                            <Input type="text" name="vehicleNo" id="vehicleNo" placeholder="with a placeholder" onChange={this.handleChange} data-at="carNumber" />
+                            <Input type="text" name="vehicleNo" id="vehicleNo" onChange={this.handleChange} data-at="vehNo" />
                         </Col>
                     </FormGroup>
 
