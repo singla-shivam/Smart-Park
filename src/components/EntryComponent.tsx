@@ -93,6 +93,12 @@ class Entry extends React.Component<EntryProps, EntryState> {
         }
 
         await this.props.firebase.addData(`booking`, booking)
+        await this.props.firebase.database.collection('slots')
+            .doc(slot).update({
+                booked: true,
+                occupied: true,
+                uid: this.state.vehNo
+            })
         this.setState({
             booked: {slot: slot}
         })
