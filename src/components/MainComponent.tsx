@@ -12,15 +12,16 @@ import { NavLink } from 'react-router-dom';
 import Entry from './EntryComponent';
 import Exit from './ExitComponent';
 import Display from './DisplayComponent';
+import Booking from './BookingComponent';
 
 
-// let uid: any = 123
-// let userType = 'user1'
+let uid: any = 123
+let userType = 'user'
+let phoneNo= "213123"
 
-
-let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
-let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
-let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
+// let uid = window.localStorage.getItem('jsadfkhewjdewbfdgqweu')
+// let userType: 'user' | null = window.localStorage.getItem('lanfklnasv') as any
+// let phoneNo: any = window.localStorage.getItem('lanfklnasvph') as any
 
 
 export interface MainProps {
@@ -84,7 +85,9 @@ class Main extends Component<MainProps, MainState> {
                     <Route exact path="/display" component={() => <FirebaseContext.Consumer>
                         {(firebase: Firebase) => <Display firebase={firebase} />}
                     </FirebaseContext.Consumer>} />} />
-
+                    <Route exact path='/booking' component={() => <FirebaseContext.Consumer>
+                        {(firebase: Firebase) => <Booking firebase={firebase} />}
+                    </FirebaseContext.Consumer>} />}
                     <Redirect to="/home" />
                 </Switch>
 
