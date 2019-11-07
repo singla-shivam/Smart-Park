@@ -90,7 +90,7 @@ class Main extends Component<MainProps, MainState> {
                     </FirebaseContext.Consumer>} />}
                     <Route exact path='/bill' component={() => <FirebaseContext.Consumer>
                         {(firebase: Firebase) => <Billing firebase={firebase} />}
-                    </FirebaseContext.Consumer>} />}
+                    </FirebaseContext.Consumer>} />
                     <Redirect to="/home" />
                 </Switch>
 
