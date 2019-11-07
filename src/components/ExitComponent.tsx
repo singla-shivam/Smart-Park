@@ -53,6 +53,8 @@ class Exit extends React.Component<ExitProps, ExitState> {
         }
 
         const booking = bookings[0]
+
+        console.log(booking)
         booking.actualCheckoutTime = Date.now()
 
         if(booking.paymentMode === 'online') {
@@ -93,6 +95,7 @@ class Exit extends React.Component<ExitProps, ExitState> {
             const timeDuration = booking.actualCheckoutTime - booking.arrivalTime
             const n = Math.ceil(timeDuration / (1000 * 60 * 60 * 24))
             let price = 0
+            console.log(timeDuration, n)
     
             if(timeDuration > 4 * 60 * 60 * 1000) {
                 // more than 12 hrs
@@ -122,11 +125,15 @@ class Exit extends React.Component<ExitProps, ExitState> {
         booking.paymentTime = booking.actualCheckoutTime
         booking.actualPrice = this.state.paymentStatus === 'cash' ? this.state.paymentAmount : this.state.paymentAmount + booking.actualPrice
         booking.paymentMode = 'cash'
-// TODO
-// Update slots
         await this.props.firebase.database.collection(`booking`).doc(booking.id).set(booking, {
             merge: true
         })
+        await this.props.firebase.database.collection('slots')
+            .doc(booking.slot).update({
+                booked: false,
+                occupied: false,
+                uid: null
+            })
 
         window.location.href = '/'
 

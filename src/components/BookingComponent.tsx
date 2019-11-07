@@ -6,6 +6,8 @@ import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { UserInterface } from '../models/user';
 import { BookingInterface } from '../models/booking';
 import { NavLink } from 'react-router-dom';
+import { SlotInterface } from '../models/slot';
+import {getSlot} from './../utitlites'
 
 export interface BookingProps {
     firebase: Firebase
@@ -22,6 +24,7 @@ export interface BookingState {
 }
 
 class Booking extends React.Component<BookingProps, BookingState> {
+    private booking: BookingInterface
     constructor(props: BookingProps) {
         super(props);
         this.state = {
@@ -34,12 +37,21 @@ class Booking extends React.Component<BookingProps, BookingState> {
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
     }
-    confirmBooking(){
+
+    async confirmBooking(){
+        await this.props.firebase.addData(`booking`, this.booking)
+        await this.props.firebase.database.collection('slots')
+            .doc(this.booking.slot).update({
+                booked: true,
+                occupied: true,
+                uid: this.booking.vehNo
+            })
         this.setState({
             amount:0,
             amountReceived: false
         })
     }
+
     handleChange(event: any) {
         const target: any = event.target
         console.log(target.value)
@@ -57,11 +69,17 @@ class Booking extends React.Component<BookingProps, BookingState> {
             opStr: '==',
             value: vehNo
         })
-        // change payment status accordingly
+
+        const slots: SlotInterface[] =  await this.props.firebase.getData(`slots`, {
+            fieldPath: 'booked',
+            opStr: '==',
+            value: false
+        })
+
+        console.log(slots)
 
         const slotInfo: any = await this.props.firebase.getData(`info/slots`)
         const emptiness: number = slotInfo[0].empty / slotInfo[0].total
-        const slot = 'A01'
 
         let arrivalTimeStamp, depDate
         let hrs = parseInt(this.state.aTime.trim().substr(0, 2))
@@ -72,11 +90,11 @@ class Booking extends React.Component<BookingProps, BookingState> {
         mins = parseInt(this.state.dDate.trim().substr(3, 2))
         depDate = (hrs * 60 + mins) * 60 * 1000 + Date.parse(this.state.dDate)
 
-        const booking: BookingInterface = {
+        this.booking = {
             dynamicCharges: emptiness < 0.5 ? 1 - 2 * emptiness : 0,
             uid: vehicle[0].uid,
             vehNo: vehNo,
-            slot: slot,
+            slot: null,
             arrivalTime: arrivalTimeStamp,
             expectedCheckoutTime: depDate,
             actualCheckoutTime: null,
@@ -87,22 +105,26 @@ class Booking extends React.Component<BookingProps, BookingState> {
         }
 
 
-        const timeDuration = booking.expectedCheckoutTime - booking.arrivalTime
+        const timeDuration = this.booking.expectedCheckoutTime - this.booking.arrivalTime
         const n = Math.ceil(timeDuration / (1000 * 60 * 60 * 24))
         let price = 0
 
         if(timeDuration > 4 * 60 * 60 * 1000) {
             // more than 12 hrs
-            price = Math.ceil(n * 100 * (1 + booking.dynamicCharges))
+            price = Math.ceil(n * 100 * (1 + this.booking.dynamicCharges))
         }
         else {
-            price = Math.ceil(n * 20 * (1 + booking.dynamicCharges))
+            price = Math.ceil(n * 20 * (1 + this.booking.dynamicCharges))
         }
+
+        // calculate slot
+        let slot = getSlot(slots, timeDuration)
+
+        this.booking.slot = slot
+
         this.setState({
             expectedPaymentAmount: price
         })
-
-        await this.props.firebase.addData(`booking`, booking)
 
     }
 
