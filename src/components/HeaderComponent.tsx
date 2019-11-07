@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse } from "reac
 import Register from './RegisterComponent';
 import { NavLink } from 'react-router-dom';
 import Firebase from '../firebase';
+import { SlotInterface } from '../models/slot';
 
 export type HeaderProps = {
     firebase: Firebase
@@ -21,6 +22,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         this.toggleNav = this.toggleNav.bind(this);
         this.logout = this.logout.bind(this);
     }
+
     toggleNav() {
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -31,6 +33,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
         this.props.firebase.logout()
     }
     render() {
+
         return (
             <div className="continer-fluid">
                 <Navbar color="primary" expand="md" >

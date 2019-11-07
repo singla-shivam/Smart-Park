@@ -31,6 +31,27 @@ class Firebase {
     this.database = app.firestore()
     this.auth = app.auth()
     this.auth.onAuthStateChanged(this.onAuthStateChanged)
+    // const that = this
+    // setTimeout(() => {
+    //   const s = ['A', 'B', 'C', 'D', 'E', 'F']
+    //   for(let i = 0; i < s.length; i++) {
+    //     const element = s[i]
+    //     for(let i = 1; i <= 50 ; i ++) {
+    //         const slotId = element + i.toString().padStart(2, '0')
+    //         console.log(slotId)
+    //         try {
+    //             that.database.collection('slots').doc(slotId).set({
+    //                 slotId: slotId,
+    //                 occupied: false,
+    //                 booked: false
+    //             }).catch(e => console.error(e))
+                
+    //         } catch (error) {
+    //             console.error(error)
+    //         }
+    //     }
+    //   }
+    // }, 1000);
   }
 
   logout() {
@@ -93,39 +114,44 @@ class Firebase {
   }
 
   async addData<T>(path: string, value: any): Promise<T>{
-    const paths = path.split('/')
-    let collection = this.database.collection(paths[0])
-    let document: firebase.firestore.DocumentReference;
-    for(let i = 1, len = paths.length; i < len; i++){
-      if(i%2 === 0){
-        collection = document.collection(paths[i])
+    try {
+      const paths = path.split('/')
+      let collection = this.database.collection(paths[0])
+      let document: firebase.firestore.DocumentReference;
+      for(let i = 1, len = paths.length; i < len; i++){
+        if(i%2 === 0){
+          collection = document.collection(paths[i])
+        }
+        else{
+          document = collection.doc(paths[i])
+        }
       }
-      else{
-        document = collection.doc(paths[i])
+  
+      if(paths.length % 2 === 0){
+        // document id is provided
+        const d = collection.doc(paths[paths.length - 1])
+        if(value.id && value.id.includes('??')) value.id = d.id
+        try {
+          await d.set(value)
+        } catch (error) {
+          console.error(error)
+        }
+        return value
       }
-    }
-
-    if(paths.length % 2 === 0){
-      // document id is provided
-      const d = collection.doc(paths[paths.length - 1])
-      if(value.id && value.id.includes('??')) value.id = d.id
-      try {
-        await d.set(value)
-      } catch (error) {
-        console.error(error)
+      else {
+        // document id is not provided
+        const d = collection.doc()
+        if(value.id && value.id.includes('??')) value.id = d.id
+        try {
+          await d.set(value)
+        } catch (error) {
+          console.error(error)
+        }
+        return value
       }
-      return value
-    }
-    else {
-      // document id is not provided
-      const d = collection.doc()
-      if(value.id && value.id.includes('??')) value.id = d.id
-      try {
-        await d.set(value)
-      } catch (error) {
-        console.error(error)
-      }
-      return value
+      
+    } catch (error) {
+      console.error(error)
     }
   }
 

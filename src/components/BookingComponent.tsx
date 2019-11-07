@@ -6,6 +6,7 @@ import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
 import { UserInterface } from '../models/user';
 import { BookingInterface } from '../models/booking';
 import { SlotInterface } from '../models/slot';
+import {getSlot} from './../utitlites'
 
 export interface BookingProps {
     firebase: Firebase
@@ -116,24 +117,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
         }
 
         // calculate slot
-        let slot = 'A012'
-        const totalNoOfSlots = slots.length
-        if(timeDuration > 7 * 24 * 60 * 60 * 1000) {
-            // more than two days
-            const max = totalNoOfSlots, min = Math.floor(2 * totalNoOfSlots / 3)
-            const random = Math.ceil(Math.random() * (max - min) + min)
-            slot = slots[random].slotId
-        }
-        else if(timeDuration <= 7 * 24 * 60 * 60 * 1000 && timeDuration > 1 * 24 * 60 * 60 * 1000) {
-            const max =  Math.floor(2 * totalNoOfSlots / 3), min = Math.floor(1 * totalNoOfSlots / 3)
-            const random = Math.ceil(Math.random() * (max - min) + min)
-            slot = slots[random].slotId
-        }
-        else {
-            const max =  Math.floor(1 * totalNoOfSlots / 3), min = 0
-            const random = Math.ceil(Math.random() * (max - min) + min)
-            slot = slots[random].slotId
-        }
+        let slot = getSlot(slots, timeDuration)
 
         this.booking.slot = slot
 

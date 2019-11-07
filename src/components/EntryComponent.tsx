@@ -4,6 +4,7 @@ import Firebase from '../firebase';
 import { UserInterface } from '../models/user';
 import { SlotInterface } from '../models/slot';
 import { BookingInterface } from '../models/booking';
+import { getSlot } from '../utitlites';
 
 export interface EntryProps {
     firebase: Firebase
@@ -75,8 +76,9 @@ class Entry extends React.Component<EntryProps, EntryState> {
         
 
         // TODO: calculate slot
+        const timeDuration = depDate - arrivalTimeStamp
 
-        const slot = 'A01'
+        const slot = getSlot(slots, timeDuration)
 
         const booking: BookingInterface = {
             dynamicCharges: emptiness < 0.5 ? 1 - 2 * emptiness : 0,
