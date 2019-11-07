@@ -19,6 +19,12 @@ class Billing extends React.Component<BillingProps, BillingState> {
         super(props);
         this.state = {
         };
+        this.completePayment = this.completePayment.bind(this)
+    }
+
+    completePayment() {
+        //@ts-ignore
+        Instamojo.open("https://www.instamojo.com/@shivam1420/");
     }
     render() {
         const {expectedCheckoutTime, arrivalTime, dynamicCharges} = this.props.booking
@@ -58,7 +64,7 @@ class Billing extends React.Component<BillingProps, BillingState> {
                         </Col >
                         <Col sm={4}></Col>
                 </div>
-                <NavLink to="#"> <Button color="success">Complete Your Payment</Button></NavLink>
+                <NavLink to="#"> <Button color="success" onClick={this.completePayment}>Complete Your Payment</Button></NavLink>
             </div>
         );
     }
