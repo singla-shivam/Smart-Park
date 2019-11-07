@@ -94,12 +94,12 @@ class Exit extends React.Component<ExitProps, ExitState> {
             const n = Math.ceil(timeDuration / (1000 * 60 * 60 * 24))
             let price = 0
     
-            if(timeDuration > 12 * 60 * 60 * 1000) {
+            if(timeDuration > 4 * 60 * 60 * 1000) {
                 // more than 12 hrs
-                price = n * 200 * booking.dynamicCharges
+                price = Math.ceil(n * 100 * (1 + booking.dynamicCharges))
             }
             else {
-                price = n * 20 * booking.dynamicCharges
+                price = Math.ceil(n * 20 * (1 + booking.dynamicCharges))
             }
             this.setState({
                 paymentStatus: 'cash',

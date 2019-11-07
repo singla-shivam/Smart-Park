@@ -3,6 +3,8 @@ import * as React from 'react';
 import Firebase from '../firebase';
 
 import { Button, Form, FormGroup, Label, Input, Col, Row } from 'reactstrap';
+import { UserInterface } from '../models/user';
+import { BookingInterface } from '../models/booking';
 
 export interface BookingProps {
     firebase: Firebase
@@ -15,21 +17,18 @@ export interface BookingState {
     dTime: string
     aDate: string
     aTime: string
-    amount: Number
-    amountReceived: Boolean
+    expectedPaymentAmount: Number
 }
 
 class Booking extends React.Component<BookingProps, BookingState> {
     constructor(props: BookingProps) {
         super(props);
         this.state = {
-
             dDate: '',
             aDate: "",
             dTime: "",
             aTime: "",
-            amount: 0,
-            amountReceived: false
+            expectedPaymentAmount: null,
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -45,53 +44,101 @@ class Booking extends React.Component<BookingProps, BookingState> {
 
     async handleSubmit() {
         // TODO: validate fields
-        console.log(this.state)
-        this.setState({
-            amountReceived: true,
-            amount: 999
+        const vehNo = localStorage.getItem('lanfklnasvveh')
+        const vehicle: UserInterface[] = await this.props.firebase.getData(`vehicles`, {
+            fieldPath: 'vehNo',
+            opStr: '==',
+            value: vehNo
         })
         // change payment status accordingly
 
+        const slotInfo: any = await this.props.firebase.getData(`info/slots`)
+        const emptiness: number = slotInfo[0].empty / slotInfo[0].total
+        const slot = 'A01'
+
+        let arrivalTimeStamp, depDate
+        let hrs = parseInt(this.state.aTime.trim().substr(0, 2))
+        let mins = parseInt(this.state.aTime.trim().substr(3, 2))
+        arrivalTimeStamp = (hrs * 60 + mins) * 60 * 1000 + Date.parse(this.state.aDate)
+
+        hrs = parseInt(this.state.dTime.trim().substr(0, 2))
+        mins = parseInt(this.state.dDate.trim().substr(3, 2))
+        depDate = (hrs * 60 + mins) * 60 * 1000 + Date.parse(this.state.dDate)
+
+        const booking: BookingInterface = {
+            dynamicCharges: emptiness < 0.5 ? 1 - 2 * emptiness : 0,
+            uid: vehicle[0].uid,
+            vehNo: vehNo,
+            slot: slot,
+            arrivalTime: arrivalTimeStamp,
+            expectedCheckoutTime: depDate,
+            actualCheckoutTime: null,
+            actualPrice: null,
+            paymentMode: null,
+            paymentTime: null,
+            id: '???'
+        }
+
+
+        const timeDuration = booking.expectedCheckoutTime - booking.arrivalTime
+        const n = Math.ceil(timeDuration / (1000 * 60 * 60 * 24))
+        let price = 0
+
+        if(timeDuration > 4 * 60 * 60 * 1000) {
+            // more than 12 hrs
+            price = Math.ceil(n * 100 * (1 + booking.dynamicCharges))
+        }
+        else {
+            price = Math.ceil(n * 20 * (1 + booking.dynamicCharges))
+        }
+        this.setState({
+            expectedPaymentAmount: price
+        })
+
+        await this.props.firebase.addData(`booking`, booking)
+
     }
+
     render() {
         const receiveForm = () => {
             return (
                 <Form className="text-left">
                     <Row>
                         <Col sm={6}>
-                            <Row><Label for="Departure" sm={6}>Departure</Label></Row>
-                            <Row>
-                                <FormGroup >
-                                    <Label for="DepartureDate" sm={2}>Date</Label>
-                                    <Col sm={12}>
-                                        <Input type="date" name="DepartureDate" id="DepartureDate" placeholder="with a placeholder" onChange={this.handleChange} data-at="dDate" />
-                                    </Col>
-                                </FormGroup>
-                                <FormGroup >
-                                    <Label for="DepartureTime" sm={2}>Time</Label>
-                                    <Col sm={12}>
-                                        <Input type="time" name="DepartureTime" id="DepartureTime" placeholder="with a placeholder" onChange={this.handleChange} data-at="dTime" />
-                                    </Col>
-                                </FormGroup>
-                            </Row>
-                        </Col>
-                        <Col sm={6}>
                             <Row><Label for="Arrival" sm={6}>Arrival</Label></Row>
                             <Row>
                                 <FormGroup >
                                     <Label for="ArrivalDate" sm={2}>Date</Label>
                                     <Col sm={12}>
-                                        <Input type="date" name="ArrivalDate" id="ArrivalDate" placeholder="with a placeholder" onChange={this.handleChange} data-at="aDate" />
+                                        <Input type="date" name="ArrivalDate" id="ArrivalDate" onChange={this.handleChange} data-at="aDate" />
                                     </Col>
                                 </FormGroup>
                                 <FormGroup >
                                     <Label for="ArrivalTime" sm={2}>Time</Label>
                                     <Col sm={12}>
-                                        <Input type="time" name="ArrivalTime" id="ArrivalTime" placeholder="with a placeholder" onChange={this.handleChange} data-at="aTime" />
+                                        <Input type="time" name="ArrivalTime" id="ArrivalTime" onChange={this.handleChange} data-at="aTime" />
                                     </Col>
                                 </FormGroup>
                             </Row>
                         </Col>
+                        <Col sm={6}>
+                            <Row><Label for="Departure" sm={6}>Departure</Label></Row>
+                            <Row>
+                                <FormGroup >
+                                    <Label for="DepartureDate" sm={2}>Date</Label>
+                                    <Col sm={12}>
+                                        <Input type="date" name="DepartureDate" id="DepartureDate" onChange={this.handleChange} data-at="dDate" />
+                                    </Col>
+                                </FormGroup>
+                                <FormGroup >
+                                    <Label for="DepartureTime" sm={2}>Time</Label>
+                                    <Col sm={12}>
+                                        <Input type="time" name="DepartureTime" id="DepartureTime" onChange={this.handleChange} data-at="dTime" />
+                                    </Col>
+                                </FormGroup>
+                            </Row>
+                        </Col>
+                        
                     </Row>
 
                     <Button onClick={this.handleSubmit}>Confirm</Button>
@@ -101,7 +148,7 @@ class Booking extends React.Component<BookingProps, BookingState> {
 
         return ( 
             <div>
-                {this.state.amountReceived? <div>Your Amount {this.state.amount}</div> :
+                {this.state.expectedPaymentAmount !== null ? <div>Your Amount {this.state.expectedPaymentAmount}</div> :
                     receiveForm()}
                 
             </div>
