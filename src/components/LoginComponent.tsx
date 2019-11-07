@@ -69,8 +69,8 @@ class Login extends React.Component<LoginProps, LoginState> {
         localStorage.setItem('lanfklnasvph', user.phoneNumber)
         if(vehicle && vehicle[0].userType) {
             // vehicle already registered
-            localStorage.setItem('lanfklnasv', user.userType)
-            localStorage.setItem('lanfklnasvveh', user.vehNo)
+            localStorage.setItem('lanfklnasv', vehicle[0].userType)
+            localStorage.setItem('lanfklnasvveh', vehicle[0].vehNo)
             if(!vehicle[0].uid) {
                 await this.props.firebase.database.doc(`vehicles/${vehicle[0].vehNo}`)
                     .update({
