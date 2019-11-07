@@ -1,9 +1,9 @@
 import React from 'react';
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse } from "reactstrap";
 import Register from './RegisterComponent';
-import { NavLink } from 'react-router-dom';
 import Firebase from '../firebase';
 import { SlotInterface } from '../models/slot';
+import { NavLink } from 'react-router-dom';
 
 export type HeaderProps = {
     firebase: Firebase
@@ -36,7 +36,7 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
         return (
             <div className="continer-fluid">
-                <Navbar color="primary" expand="md" >
+                <Navbar color="primary" expand="md" className="py-0 px-2" >
                     <NavbarToggler onClick={this.toggleNav} >
                         <i className="fa fa-bars text-light" style={{ fontSize: "24px" }}></i>
                     </NavbarToggler>
@@ -54,8 +54,9 @@ class Header extends React.Component<HeaderProps, HeaderState> {
 
                             {/* implement sign out */}
 
-                            <div className='text-light'  onClick={this.logout}><span className="fa fa-sign-out fa-lg"></span> LOGOUT</div>
-
+                            <NavLink to="/home">
+                                <div className='text-light'  onClick={this.logout}><span className="fa fa-sign-out fa-lg"></span> LOGOUT</div>
+</NavLink>
                             {/* <NavItem>
                                 <a onClick={() => (<Register />)}><span className="fa fa-registered" ></span>Register</a>
                             </NavItem> */}
