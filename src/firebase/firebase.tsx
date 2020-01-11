@@ -4,16 +4,8 @@ import 'firebase/firestore'
 
 export type OpStr = app.firestore.WhereFilterOp
 
-const config = {
-  apiKey: "AIzaSyCQuZiQmLeInyNQCPcZ4JS9cMHhCIhJ5co",
-  authDomain: "sns-mnit.firebaseapp.com",
-  databaseURL: "https://sns-mnit.firebaseio.com",
-  projectId: "sns-mnit",
-  storageBucket: "sns-mnit.appspot.com",
-  messagingSenderId: "1020618091922",
-  appId: "1:1020618091922:web:ec91633f57bd0a27f6654b",
-  measurementId: "G-MYM7JS99KE"
-}
+// TODO: add config
+const config = {}
 
 export type GetDataOptions = {
   fieldPath: string | string[]
