@@ -34,5 +34,5 @@ npm run build
  * [Shivam Singla](https://www.linkedin.com/in/singla-shivam/)
  * [Nikesh Thapa](https://www.linkedin.com/in/nikesh-thapa-3b99b0164/)
 
-Special thanks to [Satyam Kumar](https://www.linkedin.com/in/satyamcse/) for thinking innovative solutions, creating SnartPark's  business plan, designing low-res wireframes for web app, and creating a high quality presentation for the product. SmartPark's android app is available on [Satyam's GitHub Repository](https://github.com/satyamcse).
+Special thanks to [Satyam Kumar](https://www.linkedin.com/in/satyamcse/) for thinking innovative solutions, creating SmartPark's  business plan, designing low-res wireframes for web app, and creating a high quality presentation for the product. SmartPark's android app is available on [Satyam's GitHub Repository](https://github.com/satyamcse).
  
